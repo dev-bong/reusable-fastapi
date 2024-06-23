@@ -32,6 +32,7 @@ class User(Base):  # 사용자 테이블
     nickname: Mapped[str30] = mapped_column(unique=True)
     email: Mapped[Optional[str]]
     join_date: Mapped[date] = mapped_column(insert_default=func.now())
+    password: Mapped[str]
 
     posts: Mapped[List["Post"]] = relationship(back_populates="user")
 
