@@ -9,10 +9,14 @@ class Settings:
 
     config = Config(".env")  # .env 파일 불러오기
 
-    DB_USER = config("DB_USER")
-    DB_PASSWORD = config("DB_PASSWORD")
-    DB_HOST = config("DB_HOST")
-    DB_DATABASE = config("DB_DATABASE")
+    DB_USER: str = config("DB_USER")
+    DB_PASSWORD: str = config("DB_PASSWORD")
+    DB_HOST: str = config("DB_HOST")
+    DB_DATABASE: str = config("DB_DATABASE")
+
+    SECRET_KEY: str = config("SECRET_KEY")
+    JWT_ALGORITHM: str = "HS256"
+    JWT_TOKEN_EXP: int = 60 * 24
 
     def db_url_object(self):
         return URL.create(
