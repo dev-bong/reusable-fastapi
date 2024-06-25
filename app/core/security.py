@@ -23,3 +23,13 @@ def create_access_token(sub: str) -> str:
         payload=jwt_form, key=settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM
     )
     return encoded_jwt
+
+
+def decode_token(token: str) -> dict | None:
+    try:
+        payload = jwt.decode(
+            jwt=token, key=settings.SECRET_KEY, algorithms=settings.JWT_ALGORITHM
+        )
+    except jwt.exceptions.InvalidTokenError:
+        return None
+    return payload

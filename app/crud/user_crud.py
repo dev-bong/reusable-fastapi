@@ -25,6 +25,10 @@ def get_user_by_nickname(session: Session, nickname: str) -> User | None:
     return user
 
 
+def get_user_by_id(session: Session, id: int) -> User | None:
+    return session.get(User, id)
+
+
 def authenticate(session: Session, nickname: str, password: str) -> User | None:
     user = get_user_by_nickname(session=session, nickname=nickname)
     if not user or not verify_password(password, user.password):

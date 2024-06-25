@@ -2,7 +2,11 @@ from typing import Annotated
 
 from sqlalchemy.orm import Session
 from fastapi import Depends
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import (
+    OAuth2PasswordRequestForm,
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+)
 
 from app.core.db import SessionLocal
 
@@ -17,3 +21,4 @@ def get_db():
 
 SessionDep = Annotated[Session, Depends(get_db)]
 PasswordFormDep = Annotated[OAuth2PasswordRequestForm, Depends()]
+TokenDep = Annotated[HTTPAuthorizationCredentials, Depends(HTTPBearer())]
