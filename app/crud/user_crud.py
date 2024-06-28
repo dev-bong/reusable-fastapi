@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 
 from app.models import User
-from app.schemas.user_schema import UserCreate
+from app.schemas.user_schema import UserCreate, UserUpdate
 from app.core.security import get_password_hash, verify_password
 
 
@@ -34,3 +34,28 @@ def authenticate(session: Session, nickname: str, password: str) -> User | None:
     if not user or not verify_password(password, user.password):
         return None
     return user
+
+
+def update_user(session: Session, user: User, user_update: UserUpdate) -> User:
+    if user_update.email:
+        user.email = user_update.email
+    if user_update.nickname:
+        user.nickname = user_update.nickname
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user
+
+
+def update_user_password(session: Session, user: User, new_password: str) -> None:
+    user.password = get_password_hash(new_password)
+
+    session.add(user)
+    session.commit()
+
+
+def delete_user(session: Session, user: User) -> None:
+    session.delete(user)
+    session.commit()
