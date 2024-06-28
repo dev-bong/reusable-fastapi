@@ -19,3 +19,13 @@ class UserPublic(UserBase):
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    nickname: str | None = Field(default=None, title="닉네임")
+    email: EmailStr | None = Field(default=None, title="이메일")
+
+
+class PasswordUpdate(BaseModel):
+    current_password: str = Field(default=..., title="현재 비밀번호")
+    new_password: str = Field(default=..., title="새 비밀번호")
