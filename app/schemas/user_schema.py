@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic_core.core_schema import FieldValidationInfo
 
 
 class UserBase(BaseModel):
@@ -11,6 +12,12 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password1: str = Field(default=..., description="비밀번호")
     password2: str = Field(default=..., description="비밀번호 재입력")
+
+    @field_validator("password2")
+    def passwords_match(cls, v, info: FieldValidationInfo):
+        if "password1" in info.data and v != info.data["password1"]:
+            raise ValueError("비밀번호가 일치하지 않습니다")
+        return v
 
 
 class UserPublic(UserBase):
